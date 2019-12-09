@@ -29,17 +29,10 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/personas")
 public class PersonaController {
 	
-	//@Autowired
-	//private Environment env;
-	
 	@Autowired
 	private PersonaService service;
 	
 	private static Logger log = LoggerFactory.getLogger(Persona.class);
-	
-	//@Value("${configuracion.texto}")
-	//private String texto;
-	
 	
 	@GetMapping({"/listar", "/"})
 	public Flux<Persona> listar(){
@@ -64,17 +57,10 @@ public class PersonaController {
 	}
 	
 	@PutMapping("/updatePersona/{id}")
-    public Mono<ResponseEntity<Persona>> updatePersona(@PathVariable(value = "id") String personaId,
+    public Mono<Persona> updatePersona(@PathVariable(value = "id") String personaId,
                                                    @Valid @RequestBody Persona persona) {
-        return service.findById(personaId)
-                .flatMap(existingPersona -> {
-                	existingPersona.setNombre(persona.getNombre());
-                	existingPersona.setApellido(persona.getApellido());
-                	existingPersona.setDni(persona.getDni());
-                    return service.save(existingPersona);
-                })
-                .map(updatedTweet -> new ResponseEntity<>(updatedTweet, HttpStatus.OK))
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+		
+		return service.updatePersona(personaId, persona);
     }
 	
 	@PostMapping("/")
@@ -86,28 +72,11 @@ public class PersonaController {
     public Mono<ResponseEntity<Void>> deletePersona(@PathVariable(value = "id") String personaId) {
 
         return service.findById(personaId)
-                .flatMap(existingPersona ->
-                        service.delete(existingPersona)
-                            .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
-                )
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            .flatMap(existingPersona ->
+                    service.delete(existingPersona)
+                        .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
+            )
+            .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 	
-	/*@GetMapping("/obtener-config")
-	public ResponseEntity<?> obtenerConfig(@Value("${server.port}") String puerto){
-		
-		log.info(texto);
-		Map<String, String> json = new HashMap<>();
-		json.put("texto", texto);
-		json.put("puerto", puerto);
-		
-		if(env.getActiveProfiles().length>0 && env.getActiveProfiles()[0].equals("dev")) {
-			json.put("autor.nombre", env.getProperty("configuracion.autor.nombre"));
-			json.put("autor.email", env.getProperty("configuracion.autor.email"));
-		}
-		
-		return new ResponseEntity<Map<String,String>>(json, HttpStatus.OK);
-		
-	}*/
-
 }

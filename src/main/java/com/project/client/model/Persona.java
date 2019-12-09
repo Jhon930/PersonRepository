@@ -11,6 +11,10 @@ public class Persona {
 	private String nombre;
 	private String apellido;
 	private String dni;
+	private String direccion;
+	private String tipoPersona;
+	private String nroTelefono;
+	private String nroCelular;
 	
 	public String getId() {
 		return id;
@@ -36,8 +40,28 @@ public class Persona {
 	public void setDni(String dni) {
 		this.dni = dni;
 	}
-	
-	
-	
-
+	public String getDireccion() {
+		return direccion;
+	}
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+	public String getTipoPersona() {
+		return tipoPersona;
+	}
+	public void setTipoPersona(String tipoPersona) {
+		this.tipoPersona = tipoPersona;
+	}
+	public String getNroTelefono() {
+		return nroTelefono;
+	}
+	public void setNroTelefono(String nroTelefono) {
+		this.nroTelefono = nroTelefono;
+	}
+	public String getNroCelular() {
+		return nroCelular;
+	}
+	public void setNroCelular(String nroCelular) {
+		this.nroCelular = nroCelular;
+	}
 }

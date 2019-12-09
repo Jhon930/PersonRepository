@@ -12,6 +12,8 @@ public interface PersonaService {
 	public Mono<Persona> findById(String id);
 	public Mono<Persona> save(Persona persona);
 	public Mono<Void> delete(Persona persona);
+	public Mono<Persona> findByDni(String dni);
+	public Mono<Persona> updatePersona(String id, Persona persona);
 	
 
 }
