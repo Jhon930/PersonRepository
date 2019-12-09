@@ -68,6 +68,22 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				  <groupId>org.springframework.boot</groupId>
+				  <artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				  <groupId>org.jacoco</groupId>
+				  <artifactId>jacoco-maven-plugin</artifactId>
+				  <version>0.8.6-SNAPSHOT</version>
+			</plugin>
+		</plugins>
+	</build>
+	
+	
 
 	<dependencyManagement>
 		<dependencies>
