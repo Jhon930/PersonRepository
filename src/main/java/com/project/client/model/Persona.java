@@ -3,36 +3,47 @@ package com.project.client.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="personas")
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value = "Info person", description = "Complete data of a entity Persona")
+@Document(collection="persons")
 public class Persona {
 	
 	@Id
+	@ApiModelProperty(value = "The id of the info", required = false)
 	private String id;
-	private String nombre;
-	private String apellido;
+	@ApiModelProperty(value = "The id of the info", required = true)
+	private String name;
+	@ApiModelProperty(value = "The id of the info", required = true)
+	private String lastName;
+	@ApiModelProperty(value = "The id of the info", required = true)
 	private String dni;
-	private String direccion;
-	private String tipoPersona;
-	private String nroTelefono;
-	private String nroCelular;
+	@ApiModelProperty(value = "The id of the info", required = true)
+	private String address;
+	@ApiModelProperty(value = "The id of the info", required = true)
+	private String phoneNumber;
+	private String mobilePhoneNumber;
+	@ApiModelProperty(value = "The id of the info", required = true)
+	private String personType;
 	
 	public String getId() {
 		return id;
 	}
-	public void setId(String objectId) {
-		this.id = objectId;
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getNombre() {
-		return nombre;
+	public String getName() {
+		return name;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getApellido() {
-		return apellido;
+	public String getLastName() {
+		return lastName;
 	}
-	public void setApellido(String apellido) {
-		this.apellido = apellido;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	public String getDni() {
 		return dni;
@@ -40,28 +51,31 @@ public class Persona {
 	public void setDni(String dni) {
 		this.dni = dni;
 	}
-	public String getDireccion() {
-		return direccion;
+	public String getAddress() {
+		return address;
 	}
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
+	public void setAddress(String address) {
+		this.address = address;
 	}
-	public String getTipoPersona() {
-		return tipoPersona;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
-	public void setTipoPersona(String tipoPersona) {
-		this.tipoPersona = tipoPersona;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
-	public String getNroTelefono() {
-		return nroTelefono;
+	public String getMobilePhoneNumber() {
+		return mobilePhoneNumber;
 	}
-	public void setNroTelefono(String nroTelefono) {
-		this.nroTelefono = nroTelefono;
+	public void setMobileNumber(String mobilePhoneNumber) {
+		this.mobilePhoneNumber = mobilePhoneNumber;
 	}
-	public String getNroCelular() {
-		return nroCelular;
+	public String getPersonType() {
+		return personType;
 	}
-	public void setNroCelular(String nroCelular) {
-		this.nroCelular = nroCelular;
+	public void setPersonType(String personType) {
+		this.personType = personType;
 	}
+	
+	
+	
 }

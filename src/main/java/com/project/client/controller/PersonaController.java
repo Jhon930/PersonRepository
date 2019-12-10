@@ -21,12 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.client.model.Persona;
 import com.project.client.services.PersonaService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RefreshScope
 @RestController
 @RequestMapping("/personas")
+@Api(value = "infos", produces = "application/json")
 public class PersonaController {
 	
 	@Autowired
@@ -35,6 +40,10 @@ public class PersonaController {
 	private static Logger log = LoggerFactory.getLogger(Persona.class);
 	
 	@GetMapping({"/listar", "/"})
+	@ApiOperation(value = "Get Infos", notes = "Returns all infos")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Exits one info at least")
+    })
 	public Flux<Persona> listar(){
 		
 		Flux<Persona> personas = service.findAll();
@@ -50,7 +59,7 @@ public class PersonaController {
 		
 		Mono<Persona> persona = personas.filter(p -> p.getId().equals(id))
 				.next()
-				.doOnNext(pers-> log.info(pers.getNombre()));
+				.doOnNext(pers-> log.info(pers.getName()));
 		
 		return persona;
 		

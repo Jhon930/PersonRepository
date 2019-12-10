@@ -2,6 +2,7 @@ package com.project.client.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.project.client.model.Persona;
 import com.project.client.repository.PersonaRepository;
@@ -11,6 +12,9 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class PersonaServiceImpl implements PersonaService{
+	
+	@Autowired
+	private WebClient client;
 	
 	@Autowired
 	private PersonaRepository repository;
@@ -40,18 +44,9 @@ public class PersonaServiceImpl implements PersonaService{
 	}
 
 	@Override
-	public Flux<Persona> findAllByName() {
-		// TODO Auto-generated method stub
-		return repository.findAll().map(persona -> {
-		   persona.setNombre(persona.getNombre().toUpperCase());
-		   return persona;
-		});
-	}
-
-	@Override
 	public Mono<Persona> findByDni(String dni) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findByDni(dni);
+
 	}
 
 	@Override
