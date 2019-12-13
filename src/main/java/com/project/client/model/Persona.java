@@ -1,31 +1,54 @@
 package com.project.client.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value = "Info person", description = "Complete data of a entity Persona")
+
 @Document(collection="persons")
 public class Persona {
 	
 	@Id
-	@ApiModelProperty(value = "The id of the info", required = false)
 	private String id;
-	@ApiModelProperty(value = "The id of the info", required = true)
+
 	private String name;
-	@ApiModelProperty(value = "The id of the info", required = true)
+
 	private String lastName;
-	@ApiModelProperty(value = "The id of the info", required = true)
+	
 	private String dni;
-	@ApiModelProperty(value = "The id of the info", required = true)
+	
 	private String address;
-	@ApiModelProperty(value = "The id of the info", required = true)
+
 	private String phoneNumber;
+	
 	private String mobilePhoneNumber;
-	@ApiModelProperty(value = "The id of the info", required = true)
+	
 	private String personType;
+
+	@Transient
+	private List<Account> accounts;
+	
+	public Persona() {
+		
+	}
+	
+	public Persona(String id, String name, String lastName, String dni, String address, String phoneNumber,
+			String mobilePhoneNumber, String personType) {
+		this.id = id;
+		this.name = name;
+		this.lastName = lastName;
+		this.dni = dni;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.mobilePhoneNumber = mobilePhoneNumber;
+		this.personType = personType;
+	}
+	
 	
 	public String getId() {
 		return id;
@@ -75,7 +98,21 @@ public class Persona {
 	public void setPersonType(String personType) {
 		this.personType = personType;
 	}
+	public List<Account> getAccounts() {
+		return accounts;
+	}
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+	public void setMobilePhoneNumber(String mobilePhoneNumber) {
+		this.mobilePhoneNumber = mobilePhoneNumber;
+	}
 	
+	@Override
+	public String toString() {
+		return "Persona [id=" + id + ", name=" + name + ", lastName=" + lastName + ", dni=" + dni + ", accounts=" + accounts +"]";
+	}
+
 	
 	
 }

@@ -1,5 +1,10 @@
 package com.project.client.services;
 
+import static org.springframework.http.MediaType.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -12,9 +17,6 @@ import reactor.core.publisher.Mono;
 
 @Service
 public class PersonaServiceImpl implements PersonaService{
-	
-	@Autowired
-	private WebClient client;
 	
 	@Autowired
 	private PersonaRepository repository;
@@ -43,11 +45,6 @@ public class PersonaServiceImpl implements PersonaService{
 		return repository.delete(persona);
 	}
 
-	@Override
-	public Mono<Persona> findByDni(String dni) {
-		return repository.findByDni(dni);
-
-	}
 
 	@Override
 	public Mono<Persona> updatePersona(String id, Persona persona) {
@@ -56,7 +53,5 @@ public class PersonaServiceImpl implements PersonaService{
 			.flatMap(repository::save)
 			.switchIfEmpty(Mono.error(new Exception()));
 	}
-	
-	
 
 }

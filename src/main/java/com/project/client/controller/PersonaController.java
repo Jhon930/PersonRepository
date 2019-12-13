@@ -17,33 +17,32 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import com.project.client.model.Account;
 import com.project.client.model.Persona;
 import com.project.client.services.PersonaService;
+import com.project.client.utils.PersonaMapper;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RefreshScope
 @RestController
 @RequestMapping("/personas")
-@Api(value = "infos", produces = "application/json")
 public class PersonaController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonaController.class);
 	
 	@Autowired
 	private PersonaService service;
 	
+	@Autowired
+    private WebClient.Builder webClientBuilder;
+	
 	private static Logger log = LoggerFactory.getLogger(Persona.class);
 	
 	@GetMapping({"/listar", "/"})
-	@ApiOperation(value = "Get Infos", notes = "Returns all infos")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "Exits one info at least")
-    })
 	public Flux<Persona> listar(){
 		
 		Flux<Persona> personas = service.findAll();
@@ -87,5 +86,21 @@ public class PersonaController {
             )
             .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+	
+	@GetMapping("/{id}/with-accounts")
+	public Mono<Persona> findByIdWithAccounts(@PathVariable("id") String id) {
+		
+		LOGGER.info("findByIdWithAccounts: id={}", id);
+	
+		Flux<Account> accounts = webClientBuilder.build().get().uri("http://localhost:8070/person/{person}", id).retrieve().bodyToFlux(Account.class);		
+		return accounts
+				.collectList()
+				.map(a -> new Persona())
+				.mergeWith(service.findById(id))
+				.collectList()
+				.map(PersonaMapper::map);
+	}
+	
+	
 	
 }
