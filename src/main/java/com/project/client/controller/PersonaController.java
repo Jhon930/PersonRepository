@@ -27,9 +27,7 @@ import com.project.client.utils.PersonaMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RefreshScope
 @RestController
-@RequestMapping("/personas")
 public class PersonaController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(PersonaController.class);
@@ -42,21 +40,19 @@ public class PersonaController {
 	
 	private static Logger log = LoggerFactory.getLogger(Persona.class);
 	
-	@GetMapping({"/listar", "/"})
-	public Flux<Persona> listar(){
+	@GetMapping
+	public Flux<Persona> findAll(){
 		
-		Flux<Persona> personas = service.findAll();
-		
-		return personas;
+		return service.findAll();
 		
 	}
 	
-	@GetMapping("/{id}")
-	public Mono<Persona> show(@PathVariable String id){
+	@GetMapping("/{dni}")
+	public Mono<Persona> findByDni(@PathVariable("dni") String dni){
 		
 		Flux<Persona> personas = service.findAll();
 		
-		Mono<Persona> persona = personas.filter(p -> p.getId().equals(id))
+		Mono<Persona> persona = personas.filter(p -> p.getDni().equals(dni))
 				.next()
 				.doOnNext(pers-> log.info(pers.getName()));
 		
@@ -65,7 +61,7 @@ public class PersonaController {
 	}
 	
 	@PutMapping("/updatePersona/{id}")
-    public Mono<Persona> updatePersona(@PathVariable(value = "id") String personaId,
+    public Mono<Persona> updatePerson(@PathVariable(value = "id") String personaId,
                                                    @Valid @RequestBody Persona persona) {
 		
 		return service.updatePersona(personaId, persona);
@@ -77,9 +73,9 @@ public class PersonaController {
     }
 	
 	@DeleteMapping("/deletePersona/{id}")
-    public Mono<ResponseEntity<Void>> deletePersona(@PathVariable(value = "id") String personaId) {
+    public Mono<ResponseEntity<Void>> deletePerson(@PathVariable(value = "id") String personaId) {
 
-        return service.findById(personaId)
+        return service.findByDni(personaId)
             .flatMap(existingPersona ->
                     service.delete(existingPersona)
                         .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
@@ -87,16 +83,15 @@ public class PersonaController {
             .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 	
-	@GetMapping("/{id}/with-accounts")
-	public Mono<Persona> findByIdWithAccounts(@PathVariable("id") String id) {
+	@GetMapping("/{dni}/account")
+	public Mono<Persona> findAccountsByDniPerson(@PathVariable("dni") String dni) {
 		
-		LOGGER.info("findByIdWithAccounts: id={}", id);
-	
-		Flux<Account> accounts = webClientBuilder.build().get().uri("http://localhost:8070/person/{person}", id).retrieve().bodyToFlux(Account.class);		
+		LOGGER.info("findAccountsByDniPerson: dni={}", dni);
+		Flux<Account> accounts = webClientBuilder.build().get().uri("http://account-service/person/{person}", dni).retrieve().bodyToFlux(Account.class);		
 		return accounts
 				.collectList()
-				.map(a -> new Persona())
-				.mergeWith(service.findById(id))
+				.map(a -> new Persona(a))
+				.mergeWith(service.findByDni(dni))
 				.collectList()
 				.map(PersonaMapper::map);
 	}

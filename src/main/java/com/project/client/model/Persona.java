@@ -37,6 +37,10 @@ public class Persona {
 		
 	}
 	
+	public Persona(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+	
 	public Persona(String id, String name, String lastName, String dni, String address, String phoneNumber,
 			String mobilePhoneNumber, String personType) {
 		this.id = id;

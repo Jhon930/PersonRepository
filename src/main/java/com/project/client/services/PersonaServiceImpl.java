@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.project.client.model.Account;
 import com.project.client.model.Persona;
+import com.project.client.repository.AccountRepository;
 import com.project.client.repository.PersonaRepository;
 
 import reactor.core.publisher.Flux;
@@ -20,6 +22,9 @@ public class PersonaServiceImpl implements PersonaService{
 	
 	@Autowired
 	private PersonaRepository repository;
+	
+	@Autowired
+	private AccountRepository cRepository;
 
 	@Override
 	public Flux<Persona> findAll() {
@@ -53,5 +58,14 @@ public class PersonaServiceImpl implements PersonaService{
 			.flatMap(repository::save)
 			.switchIfEmpty(Mono.error(new Exception()));
 	}
+
+	@Override
+	public Mono<Persona> findByDni(String dni) {
+		// TODO Auto-generated method stub
+		return repository.findByDni(dni);
+	}
+
+
+	
 
 }
