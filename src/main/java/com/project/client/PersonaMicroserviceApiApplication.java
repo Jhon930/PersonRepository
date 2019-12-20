@@ -16,9 +16,7 @@ public class PersonaMicroserviceApiApplication  {
 		SpringApplication.run(PersonaMicroserviceApiApplication.class, args);
 	}
 	
-	@Bean
-	@LoadBalanced
-	public WebClient.Builder loadBalancedWebClientBuilder() {
-		return WebClient.builder();
+	public WebClient registrarWebClient() {
+		return WebClient.create("http://localhost:8070/api/account");
 	}
 }

@@ -10,10 +10,6 @@ public class Account {
 	
 	private Persona person;
 	
-	public Account() {
-		
-	}
-	
 	public String getId() {
 		return id;
 	}

@@ -11,11 +11,9 @@ public interface PersonaService {
 	public Flux<Persona> findAll();
 	public Mono<Persona> save(Persona persona);
 	public Mono<Void> delete(Persona persona);
-	public Mono<Persona> findByDni(String dni);
+	//public Mono<Persona> findByDni(String dni);
 	public Mono<Persona> findById(String id);
 	public Mono<Persona> updatePersona(String id, Persona persona);
-	
-	
 
 }
  

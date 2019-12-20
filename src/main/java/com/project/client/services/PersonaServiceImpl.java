@@ -59,11 +59,6 @@ public class PersonaServiceImpl implements PersonaService{
 			.switchIfEmpty(Mono.error(new Exception()));
 	}
 
-	@Override
-	public Mono<Persona> findByDni(String dni) {
-		// TODO Auto-generated method stub
-		return repository.findByDni(dni);
-	}
 
 
 	
