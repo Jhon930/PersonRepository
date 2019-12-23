@@ -10,6 +10,12 @@ public class Account {
 	
 	private Persona person;
 	
+	public Persona getPerson() {
+		return person;
+	}
+	public void setPerson(Persona person) {
+		this.person = person;
+	}
 	public String getId() {
 		return id;
 	}
@@ -40,13 +46,6 @@ public class Account {
 	public void setTypeAccount(String typeAccount) {
 		this.typeAccount = typeAccount;
 	}
-	public Persona getPerson() {
-		return person;
-	}
-	public void setPerson(Persona person) {
-		this.person = person;
-	}
-	
 	@Override
 	public String toString() {
 		return "Account [id=" + id + ", numberAccount=" + numberAccount + ", currentBalance=" + currentBalance + "]";

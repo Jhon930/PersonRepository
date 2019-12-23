@@ -60,6 +60,12 @@ public class PersonaController {
 		
 	}
 	
+	@GetMapping("/account/{account}")
+	public Flux<Account> findByAccount(@PathVariable("account") String numAccount) {
+		LOGGER.info("findByAccount: numAccount={}", numAccount);
+		return repository.findPersonByNumberAccount(numAccount);
+	}
+	
 	@GetMapping("/person/{id}")
 	public Mono<ResponseEntity<Persona>> showPerson(@PathVariable String id){
 		return service.findById(id).map(p -> ResponseEntity.ok()
@@ -67,8 +73,6 @@ public class PersonaController {
 				.body(p))
 				.defaultIfEmpty(ResponseEntity.notFound().build());
 	}
-	
-	
 	
 	@GetMapping("/{dni}")
 	public Mono<Persona> findByDni(@PathVariable("dni") String dni){
