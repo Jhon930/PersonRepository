@@ -26,32 +26,32 @@ import org.springframework.web.bind.support.WebExchangeBindException;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.project.client.model.Account;
-import com.project.client.model.Persona;
-import com.project.client.repository.PersonaRepository;
-import com.project.client.services.PersonaService;
+import com.project.client.model.Person;
+import com.project.client.repository.PersonRepository;
+import com.project.client.services.PersonService;
 import com.project.client.utils.PersonaMapper;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-public class PersonaController {
+public class PersonController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(PersonaController.class);
-	
-	@Autowired
-	private PersonaService service;
+	private static final Logger LOGGER = LoggerFactory.getLogger(PersonController.class);
 	
 	@Autowired
-	private PersonaRepository repository;
+	private PersonService service;
+	
+	@Autowired
+	private PersonRepository repository;
 	
 	@Autowired
     private WebClient.Builder webClientBuilder;
 	
-	private static Logger log = LoggerFactory.getLogger(Persona.class);
+	private static Logger log = LoggerFactory.getLogger(Person.class);
 	
 	@GetMapping
-	public Mono<ResponseEntity<Flux<Persona>>> findAllPerson(){
+	public Mono<ResponseEntity<Flux<Person>>> findAllPerson(){
 		
 		return Mono.just(ResponseEntity.ok()
 						.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -67,7 +67,7 @@ public class PersonaController {
 	}
 	
 	@GetMapping("/person/{id}")
-	public Mono<ResponseEntity<Persona>> showPerson(@PathVariable String id){
+	public Mono<ResponseEntity<Person>> showPerson(@PathVariable String id){
 		return service.findById(id).map(p -> ResponseEntity.ok()
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.body(p))
@@ -75,20 +75,20 @@ public class PersonaController {
 	}
 	
 	@GetMapping("/{dni}")
-	public Mono<Persona> findByDni(@PathVariable("dni") String dni){
+	public Mono<Person> findByDni(@PathVariable("dni") String dni){
 		
-		Flux<Persona> personas = service.findAll();
+		Flux<Person> persons = service.findAll();
 		
-		Mono<Persona> persona = personas.filter(p -> p.getDni().equals(dni))
+		Mono<Person> person = persons.filter(p -> p.getDni().equals(dni))
 				.next()
 				.doOnNext(pers-> log.info(pers.getName()));
 		
-		return persona;
+		return person;
 		
 	}
 	
 	@PutMapping("/updatePersona/{id}")
-    public Mono <ResponseEntity<Persona>> updatePerson(@Valid @RequestBody Persona person, @PathVariable(value = "id") String id){
+    public Mono <ResponseEntity<Person>> updatePerson(@Valid @RequestBody Person person, @PathVariable(value = "id") String id){
 		
 		return service.findById(id).flatMap(p-> {
 			 p.setName(person.getName());
@@ -97,7 +97,6 @@ public class PersonaController {
 			 p.setAddress(person.getAddress());
 			 p.setPhoneNumber(person.getPhoneNumber());
 			 p.setMobilePhoneNumber(person.getMobilePhoneNumber());
-			 p.setPersonType(person.getPersonType());
 			 return service.save(person);
 		}).map(p-> ResponseEntity.created(URI.create("/api/person/".concat(p.getId())))
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -106,7 +105,7 @@ public class PersonaController {
     }
 	
 	@PostMapping("/")
-    public Mono<ResponseEntity<Map<String, Object>>> createPerson(@Valid @RequestBody Mono<Persona> monoPerson) {
+    public Mono<ResponseEntity<Map<String, Object>>> createPerson(@Valid @RequestBody Mono<Person> monoPerson) {
 		
 		Map<String, Object> response = new HashMap<String, Object>();
 		
@@ -147,13 +146,13 @@ public class PersonaController {
     }
 	
 	@GetMapping("/person/{dni}/accounts")
-	public Mono<Persona> findAccountsByDniPerson(@PathVariable("dni") String dni) {
+	public Mono<Person> findAccountsByDniPerson(@PathVariable("dni") String dni) {
 		
 		LOGGER.info("findAccountsByDniPerson: dni={}", dni);
-		Flux<Account> accounts = webClientBuilder.build().get().uri("http://localhost:8070/person/{person}", dni).retrieve().bodyToFlux(Account.class);		
+		Flux<Account> accounts = webClientBuilder.build().get().uri("http://localhost:8070/find/{person}", dni).retrieve().bodyToFlux(Account.class);		
 		return accounts
 				.collectList()
-				.map(a -> new Persona(a))
+				.map(a -> new Person(a))
 				.mergeWith(repository.findByDni(dni))
 				.collectList()
 				.map(PersonaMapper::map);

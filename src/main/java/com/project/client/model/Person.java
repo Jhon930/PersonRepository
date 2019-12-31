@@ -11,38 +11,28 @@ import io.swagger.annotations.ApiModelProperty;
 
 
 @Document(collection="persons")
-public class Persona {
+public class Person {
 	
 	@Id
 	private String id;
-
 	private String name;
-
 	private String lastName;
-	
 	private String dni;
-	
 	private String address;
-
 	private String phoneNumber;
-	
 	private String mobilePhoneNumber;
-	
-	private String personType;
-
-	@Transient
 	private List<Account> accounts;
 	
-	public Persona() {
+	public Person() {
 		
 	}
 	
-	public Persona(List<Account> accounts) {
+	public Person(List<Account> accounts) {
 		this.accounts = accounts;
 	}
 	
-	public Persona(String id, String name, String lastName, String dni, String address, String phoneNumber,
-			String mobilePhoneNumber, String personType) {
+	public Person(String id, String name, String lastName, String dni, String address, String phoneNumber,
+			String mobilePhoneNumber) {
 		this.id = id;
 		this.name = name;
 		this.lastName = lastName;
@@ -50,7 +40,6 @@ public class Persona {
 		this.address = address;
 		this.phoneNumber = phoneNumber;
 		this.mobilePhoneNumber = mobilePhoneNumber;
-		this.personType = personType;
 	}
 	
 	
@@ -95,12 +84,6 @@ public class Persona {
 	}
 	public void setMobileNumber(String mobilePhoneNumber) {
 		this.mobilePhoneNumber = mobilePhoneNumber;
-	}
-	public String getPersonType() {
-		return personType;
-	}
-	public void setPersonType(String personType) {
-		this.personType = personType;
 	}
 	public List<Account> getAccounts() {
 		return accounts;

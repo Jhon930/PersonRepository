@@ -11,15 +11,15 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import com.project.client.controller.PersonaController;
-import com.project.client.model.Persona;
-import com.project.client.services.PersonaService;
+import com.project.client.controller.PersonController;
+import com.project.client.model.Person;
+import com.project.client.services.PersonService;
 
 @Configuration
 public class RouterConfig {
 	
 	@Autowired
-	private PersonaService service;
+	private PersonService service;
 	
 	@Bean
 	public RouterFunction<ServerResponse> rutas(){
@@ -27,7 +27,7 @@ public class RouterConfig {
 		return route(GET("/api/person"), request -> {
 			return ServerResponse.ok()
 					.contentType(MediaType.APPLICATION_JSON_UTF8)
-					.body(service.findAll(), Persona.class);
+					.body(service.findAll(), Person.class);
 		});
 	}
 

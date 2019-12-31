@@ -8,12 +8,12 @@ public class Account {
 	private String  createdAt;
 	private String typeAccount;
 	
-	private Persona person;
+	private Person person;
 	
-	public Persona getPerson() {
+	public Person getPerson() {
 		return person;
 	}
-	public void setPerson(Persona person) {
+	public void setPerson(Person person) {
 		this.person = person;
 	}
 	public String getId() {

@@ -10,51 +10,51 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.project.client.model.Account;
-import com.project.client.model.Persona;
+import com.project.client.model.Person;
 import com.project.client.repository.AccountRepository;
-import com.project.client.repository.PersonaRepository;
+import com.project.client.repository.PersonRepository;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
-public class PersonaServiceImpl implements PersonaService{
+public class PersonServiceImpl implements PersonService{
 	
 	@Autowired
-	private PersonaRepository repository;
+	private PersonRepository repository;
 	
 	@Autowired
 	private AccountRepository cRepository;
 
 	@Override
-	public Flux<Persona> findAll() {
+	public Flux<Person> findAll() {
 		// TODO Auto-generated method stub
 		return repository.findAll();
 	}
 
 	@Override
-	public Mono<Persona> findById(String id) {
+	public Mono<Person> findById(String id) {
 		// TODO Auto-generated method stub
 		return repository.findById(id);
 	}
 
 	@Override
-	public Mono<Persona> save(Persona persona) {
+	public Mono<Person> save(Person person) {
 		// TODO Auto-generated method stub
-		return repository.save(persona);
+		return repository.save(person);
 	}
 
 	@Override
-	public Mono<Void> delete(Persona persona) {
+	public Mono<Void> delete(Person person) {
 		// TODO Auto-generated method stub
-		return repository.delete(persona);
+		return repository.delete(person);
 	}
 
 
 	@Override
-	public Mono<Persona> updatePersona(String id, Persona persona) {
+	public Mono<Person> updatePersona(String id, Person person) {
 		return findById(id)
-			.map(p -> persona)
+			.map(p -> person)
 			.flatMap(repository::save)
 			.switchIfEmpty(Mono.error(new Exception()));
 	}
