@@ -144,12 +144,12 @@ public class PersonController {
             )
             .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-	
-	@GetMapping("/person/{dni}/accounts")
+
+	@GetMapping("/{dni}/accounts")
 	public Mono<Person> findAccountsByDniPerson(@PathVariable("dni") String dni) {
 		
 		LOGGER.info("findAccountsByDniPerson: dni={}", dni);
-		Flux<Account> accounts = webClientBuilder.build().get().uri("http://localhost:8070/find/{person}", dni).retrieve().bodyToFlux(Account.class);		
+		Flux <Account> accounts = webClientBuilder.build().get().uri("http://localhost:8070/person/{person}", dni).retrieve().bodyToFlux(Account.class);		
 		return accounts
 				.collectList()
 				.map(a -> new Person(a))
